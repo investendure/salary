@@ -3,55 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Salary Calculator</title>
+    <title>Global Salary Estimator</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <header>
-        <h1>Salary Calculator</h1>
-        <p>Estimate your annual take-home pay with our simple tool.</p>
+        <h1>Global Salary Estimator</h1>
+        <p>Discover your potential earnings based on your role, experience, and location.</p>
     </header>
 
     <main>
         <div class="app-container">
-            <!-- The form now handles the inputs for better accessibility -->
-            <form id="salary-form" class="calculator-section">
-                <h2>Enter Your Details</h2>
+            <form id="estimator-form" class="estimator-section">
+                <h2>Estimate Your Salary</h2>
                 
                 <div class="input-group">
-                    <label for="salary">Gross Annual Salary</label>
-                    <input type="number" id="salary" placeholder="e.g., 50000" required>
+                    <label for="job-title">Job Title</label>
+                    <input type="text" id="job-title" placeholder="e.g., Software Engineer" list="job-titles-list" required>
+                    <datalist id="job-titles-list"></datalist>
+                </div>
+
+                <div class="input-group">
+                    <label for="experience">Years of Experience</label>
+                    <input type="number" id="experience" placeholder="e.g., 5" min="0" max="50" required>
                 </div>
 
                 <div class="input-group">
                     <label for="country">Country</label>
                     <select id="country">
-                        <option value="usa">United States (USD)</option>
-                        <option value="uk">United Kingdom (GBP)</option>
-                        <option value="canada">Canada (CAD)</option>
-                        <!-- It's now easy to add more countries here! -->
+                        <option value="usa">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="canada">Canada</option>
+                        <option value="germany">Germany</option>
+                        <option value="france">France</option>
+                        <option value="australia">Australia</option>
+                        <option value="japan">Japan</option>
+                        <option value="india">India</option>
+                        <option value="brazil">Brazil</option>
+                        <option value="netherlands">Netherlands</option>
+                        <option value="spain">Spain</option>
+                        <option value="italy">Italy</option>
+                        <option value="switzerland">Switzerland</option>
+                        <option value="morocco">Morocco</option> <!-- Morocco Added -->
                     </select>
                 </div>
 
-                <button type="submit" id="calculate-btn">Calculate Your Salary</button>
+                <button type="submit" id="estimate-btn">Estimate Salary</button>
             </form>
 
             <div class="results-section">
-                <h2>Your Estimated Results</h2>
+                <h2>Your Estimated Salary Range</h2>
                 <div id="results-output">
-                    <p class="placeholder">Your results will be displayed here.</p>
+                    <p class="placeholder">Your estimate will appear here.</p>
                 </div>
-            </div>
-
-            <div class="image-section">
-                <img src="assets/hero_image.png" alt="Illustration of people managing finances">
             </div>
         </div>
     </main>
 
     <footer>
-        <p>© 2024 Salary Calculator. All calculations are estimates.</p>
+        <p>© 2024 Salary Estimator. All figures are estimates based on a simplified model and sample data.</p>
     </footer>
 
     <script src="script.js"></script>
