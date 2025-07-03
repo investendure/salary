@@ -1,110 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     // --- DOM ELEMENTS ---
     const form = document.getElementById('simulator-form');
     const experienceSlider = document.getElementById('experience');
     const expValueSpan = document.getElementById('exp-value');
     const resultsContainer = document.getElementById('results-container');
-    const comparisonGrid = document.getElementById('comparison-grid');
-
-    // --- DATA MODELS ---
-
-    // Base salaries in USD for a mid-level role at a medium-sized company.
-    // This is the starting point before multipliers.
-    const BASE_SALARIES_USD = {
-        'software-engineer': 110000,
-        'senior-software-engineer': 150000,
-        'data-scientist': 125000,
-        'product-manager': 130000,
-        'devops-engineer': 120000,
-        'ui-ux-designer': 95000,
-        'machine-learning-engineer': 145000,
-        'cybersecurity-analyst': 105000,
-    };
-
-    // Multipliers to adjust the USD base salary for local market conditions.
-    const COUNTRY_MULTIPLIERS = {
-        usa: 1.0, uk: 0.75, canada: 0.85, germany: 0.8, france: 0.7,
-        netherlands: 0.82, sweden: 0.78, morocco: 0.2, india: 0.25,
-        japan: 0.72, singapore: 0.9, australia: 0.95
-    };
-
-    // Local currency information for display.
-    const COUNTRY_CURRENCY_INFO = {
-        usa: { code: 'USD', name: 'US Dollar' }, uk: { code: 'GBP', name: 'British Pound' },
-        canada: { code: 'CAD', name: 'Canadian Dollar' }, germany: { code: 'EUR', name: 'Euro' },
-        france: { code: 'EUR', name: 'Euro' }, netherlands: { code: 'EUR', name: 'Euro' },
-        sweden: { code: 'SEK', name: 'Swedish Krona' }, morocco: { code: 'MAD', name: 'Moroccan Dirham' },
-        india: { code: 'INR', name: 'Indian Rupee' }, japan: { code: 'JPY', name: 'Japanese Yen' },
-        singapore: { code: 'SGD', name: 'Singapore Dollar' }, australia: { code: 'AUD', name: 'Australian Dollar' }
-    };
     
-    // Exchange rates from USD to local currency (simplified).
-    const EXCHANGE_RATES = {
-        USD: 1, GBP: 0.8, CAD: 1.35, EUR: 0.92, SEK: 10.5,
-        MAD: 10.0, INR: 83.0, JPY: 155.0, SGD: 1.35, AUD: 1.5
+    // --- DATA ---
+    const salaryData = {
+        'software-engineer': { 'usa': { base: 95000, multiplier: 1.0 }, 'canada': { base: 75000, multiplier: 0.85 }, 'uk': { base: 65000, multiplier: 0.75 }, 'germany': { base: 70000, multiplier: 0.8 }, 'france': { base: 55000, multiplier: 0.7 }, 'netherlands': { base: 72000, multiplier: 0.82 }, 'sweden': { base: 68000, multiplier: 0.78 }, 'morocco': { base: 15000, multiplier: 0.4 }, 'india': { base: 18000, multiplier: 0.6 }, 'china': { base: 25000, multiplier: 0.65 }, 'japan': { base: 58000, multiplier: 0.72 }, 'singapore': { base: 65000, multiplier: 0.75 }, 'australia': { base: 78000, multiplier: 0.82 }, 'brazil': { base: 28000, multiplier: 0.55 }, 'mexico': { base: 32000, multiplier: 0.58 }, 'south-africa': { base: 24000, multiplier: 0.5 }},
+        'senior-software-engineer': { 'usa': { base: 140000, multiplier: 1.0 }, 'canada': { base: 115000, multiplier: 0.85 }, 'uk': { base: 95000, multiplier: 0.75 }, 'germany': { base: 105000, multiplier: 0.8 }, 'france': { base: 85000, multiplier: 0.7 }, 'netherlands': { base: 110000, multiplier: 0.82 }, 'sweden': { base: 102000, multiplier: 0.78 }, 'morocco': { base: 28000, multiplier: 0.4 }, 'india': { base: 35000, multiplier: 0.6 }, 'china': { base: 45000, multiplier: 0.65 }, 'japan': { base: 88000, multiplier: 0.72 }, 'singapore': { base: 98000, multiplier: 0.75 }, 'australia': { base: 118000, multiplier: 0.82 }, 'brazil': { base: 48000, multiplier: 0.55 }, 'mexico': { base: 52000, multiplier: 0.58 }, 'south-africa': { base: 38000, multiplier: 0.5 }},
+        'data-scientist': { 'usa': { base: 110000, multiplier: 1.0 }, 'canada': { base: 88000, multiplier: 0.85 }, 'uk': { base: 78000, multiplier: 0.75 }, 'germany': { base: 85000, multiplier: 0.8 }, 'france': { base: 68000, multiplier: 0.7 }, 'netherlands': { base: 82000, multiplier: 0.82 }, 'sweden': { base: 79000, multiplier: 0.78 }, 'morocco': { base: 18000, multiplier: 0.4 }, 'india': { base: 22000, multiplier: 0.6 }, 'china': { base: 32000, multiplier: 0.65 }, 'japan': { base: 72000, multiplier: 0.72 }, 'singapore': { base: 78000, multiplier: 0.75 }, 'australia': { base: 92000, multiplier: 0.82 }, 'brazil': { base: 38000, multiplier: 0.55 }, 'mexico': { base: 42000, multiplier: 0.58 }, 'south-africa': { base: 32000, multiplier: 0.5 }},
+        'product-manager': { 'usa': { base: 120000, multiplier: 1.0 }, 'canada': { base: 95000, multiplier: 0.85 }, 'uk': { base: 85000, multiplier: 0.75 }, 'germany': { base: 90000, multiplier: 0.8 }, 'france': { base: 75000, multiplier: 0.7 }, 'netherlands': { base: 88000, multiplier: 0.82 }, 'sweden': { base: 85000, multiplier: 0.78 }, 'morocco': { base: 20000, multiplier: 0.4 }, 'india': { base: 25000, multiplier: 0.6 }, 'china': { base: 35000, multiplier: 0.65 }, 'japan': { base: 78000, multiplier: 0.72 }, 'singapore': { base: 85000, multiplier: 0.75 }, 'australia': { base: 98000, multiplier: 0.82 }, 'brazil': { base: 42000, multiplier: 0.55 }, 'mexico': { base: 45000, multiplier: 0.58 }, 'south-africa': { base: 35000, multiplier: 0.5 }},
+        'devops-engineer': { 'usa': { base: 105000, multiplier: 1.0 }, 'canada': { base: 85000, multiplier: 0.85 }, 'uk': { base: 75000, multiplier: 0.75 }, 'germany': { base: 80000, multiplier: 0.8 }, 'france': { base: 65000, multiplier: 0.7 }, 'netherlands': { base: 78000, multiplier: 0.82 }, 'sweden': { base: 75000, multiplier: 0.78 }, 'morocco': { base: 16000, multiplier: 0.4 }, 'india': { base: 20000, multiplier: 0.6 }, 'china': { base: 28000, multiplier: 0.65 }, 'japan': { base: 65000, multiplier: 0.72 }, 'singapore': { base: 72000, multiplier: 0.75 }, 'australia': { base: 88000, multiplier: 0.82 }, 'brazil': { base: 35000, multiplier: 0.55 }, 'mexico': { base: 38000, multiplier: 0.58 }, 'south-africa': { base: 28000, multiplier: 0.5 }},
+        'ui-ux-designer': { 'usa': { base: 85000, multiplier: 1.0 }, 'canada': { base: 68000, multiplier: 0.85 }, 'uk': { base: 58000, multiplier: 0.75 }, 'germany': { base: 62000, multiplier: 0.8 }, 'france': { base: 52000, multiplier: 0.7 }, 'netherlands': { base: 65000, multiplier: 0.82 }, 'sweden': { base: 62000, multiplier: 0.78 }, 'morocco': { base: 12000, multiplier: 0.4 }, 'india': { base: 15000, multiplier: 0.6 }, 'china': { base: 22000, multiplier: 0.65 }, 'japan': { base: 52000, multiplier: 0.72 }, 'singapore': { base: 58000, multiplier: 0.75 }, 'australia': { base: 72000, multiplier: 0.82 }, 'brazil': { base: 25000, multiplier: 0.55 }, 'mexico': { base: 28000, multiplier: 0.58 }, 'south-africa': { base: 22000, multiplier: 0.5 }},
+        'machine-learning-engineer': { 'usa': { base: 130000, multiplier: 1.0 }, 'canada': { base: 105000, multiplier: 0.85 }, 'uk': { base: 92000, multiplier: 0.75 }, 'germany': { base: 98000, multiplier: 0.8 }, 'france': { base: 82000, multiplier: 0.7 }, 'netherlands': { base: 95000, multiplier: 0.82 }, 'sweden': { base: 92000, multiplier: 0.78 }, 'morocco': { base: 22000, multiplier: 0.4 }, 'india': { base: 28000, multiplier: 0.6 }, 'china': { base: 38000, multiplier: 0.65 }, 'japan': { base: 85000, multiplier: 0.72 }, 'singapore': { base: 92000, multiplier: 0.75 }, 'australia': { base: 108000, multiplier: 0.82 }, 'brazil': { base: 45000, multiplier: 0.55 }, 'mexico': { base: 48000, multiplier: 0.58 }, 'south-africa': { base: 38000, multiplier: 0.5 }},
+        'cybersecurity-analyst': { 'usa': { base: 95000, multiplier: 1.0 }, 'canada': { base: 78000, multiplier: 0.85 }, 'uk': { base: 68000, multiplier: 0.75 }, 'germany': { base: 72000, multiplier: 0.8 }, 'france': { base: 62000, multiplier: 0.7 }, 'netherlands': { base: 75000, multiplier: 0.82 }, 'sweden': { base: 72000, multiplier: 0.78 }, 'morocco': { base: 18000, multiplier: 0.4 }, 'india': { base: 22000, multiplier: 0.6 }, 'china': { base: 28000, multiplier: 0.65 }, 'japan': { base: 65000, multiplier: 0.72 }, 'singapore': { base: 72000, multiplier: 0.75 }, 'australia': { base: 82000, multiplier: 0.82 }, 'brazil': { base: 35000, multiplier: 0.55 }, 'mexico': { base: 38000, multiplier: 0.58 }, 'south-africa': { base: 28000, multiplier: 0.5 }},
     };
 
-    // Multipliers for company size.
-    const COMPANY_SIZE_MULTIPLIERS = {
-        startup: 0.9, small: 0.95, medium: 1.0, large: 1.1, enterprise: 1.2
-    };
-
+    const companySizeMultipliers = { 'startup': 0.85, 'small': 0.92, 'medium': 1.0, 'large': 1.15, 'enterprise': 1.25 };
 
     // --- EVENT LISTENERS ---
-    experienceSlider.addEventListener('input', () => {
-        expValueSpan.textContent = experienceSlider.value;
+    experienceSlider.addEventListener('input', (e) => {
+        expValueSpan.textContent = e.target.value;
     });
 
     form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        calculateAndDisplay();
+        e.preventDefault(); // Prevents page reload
+        runSimulation();
     });
 
-    // --- CORE FUNCTIONS ---
-    function calculateSalary(job, country, experience, companySize) {
-        const baseUsd = BASE_SALARIES_USD[job];
-        
-        // 1. Adjust for country market
-        const countryAdjustedUsd = baseUsd * COUNTRY_MULTIPLIERS[country];
-
-        // 2. Adjust for experience (adds/subtracts a percentage from the base)
-        const experienceFactor = 1 + ((experience - 10) * 0.05); // 5% per year from a 10-year baseline
-        const experienceAdjustedUsd = countryAdjustedUsd * experienceFactor;
-
-        // 3. Adjust for company size
-        const finalUsd = experienceAdjustedUsd * COMPANY_SIZE_MULTIPLIERS[companySize];
-
-        // 4. Convert to local currency
-        const localCurrency = COUNTRY_CURRENCY_INFO[country].code;
-        const exchangeRate = EXCHANGE_RATES[localCurrency];
-        const finalLocalSalary = finalUsd * exchangeRate;
-
-        // Round to a sensible number
-        return Math.round(finalLocalSalary / 1000) * 1000;
-    }
-    
-    function calculateAndDisplay() {
-        const job = document.getElementById('job-title').value;
+    // --- MAIN FUNCTIONS ---
+    function runSimulation() {
+        const jobTitle = document.getElementById('job-title').value;
         const country = document.getElementById('country').value;
-        const experience = parseInt(experienceSlider.value, 10);
+        const experience = parseInt(document.getElementById('experience').value);
         const companySize = document.getElementById('company-size').value;
 
-        if (!job || !country || !companySize) {
-            resultsContainer.innerHTML = `<div class="placeholder"><p class="error">Please fill out all fields to simulate a salary.</p></div>`;
+        if (!jobTitle || !country || !companySize) {
+            resultsContainer.innerHTML = `<p class="error-message">Please fill in all fields to calculate the salary.</p>`;
             return;
         }
 
-        const annualSalary = calculateSalary(job, country, experience, companySize);
-        const currencyInfo = COUNTRY_CURRENCY_INFO[country];
+        const annualSalary = calculateSalary(jobTitle, country, experience, companySize);
+        displayResults(annualSalary, jobTitle, country, experience);
+        generateComparison(jobTitle, experience, companySize);
+    }
+
+    function calculateSalary(jobTitle, country, experience, companySize) {
+        const defaultJob = 'software-engineer';
+        const defaultCountry = 'usa';
+        
+        const jobData = salaryData[jobTitle] || salaryData[defaultJob];
+        const countryData = jobData[country] || jobData[defaultCountry];
+        
+        let annualSalary = countryData.base;
+        
+        // Apply multipliers
+        annualSalary *= (1 + (experience * 0.08));
+        annualSalary *= (companySizeMultipliers[companySize] || 1.0);
+        annualSalary *= countryData.multiplier;
+        
+        return Math.round(annualSalary / 1000) * 1000;
+    }
+
+    function displayResults(annualSalary, jobTitle, country, experience) {
         const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency', currency: currencyInfo.code, minimumFractionDigits: 0
+            style: 'currency', currency: 'USD', minimumFractionDigits: 0
         });
 
-        // Display main results
+        // Generate market insight
+        const insights = [
+            `${jobTitle.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} roles in ${country.toUpperCase()} are currently in high demand.`,
+            `With ${experience} years of experience, you're in the ${experience < 3 ? 'entry' : experience < 7 ? 'mid' : 'senior'} level range.`,
+            `This salary estimate is based on current market trends and industry standards.`,
+            `Consider additional benefits like stock options, health insurance, and retirement plans.`
+        ];
+        const randomInsight = insights[Math.floor(Math.random() * insights.length)];
+
+        // Create the HTML for the results
         resultsContainer.innerHTML = `
             <div class="salary-result">
                 <div class="salary-amount">${formatter.format(annualSalary)}</div>
-                <div class="salary-currency">Annual Salary (${currencyInfo.code})</div>
+                <div>Annual Salary (USD)</div>
             </div>
             <div class="salary-details">
                 <div class="detail-card">
@@ -125,47 +103,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div class="trend-chart">
-                <h3><i class="fas fa-chart-pie"></i> Market Insight</h3>
-                <p>${getMarketInsight(job, country, experience)}</p>
+                <h3>Market Insights</h3>
+                <p>${randomInsight}</p>
             </div>
         `;
-
-        // Display comparison grid
-        generateComparison(job, experience, companySize);
     }
 
-    function generateComparison(job, experience, companySize) {
-        const comparisonCountries = ['usa', 'uk', 'germany', 'singapore', 'morocco', 'canada'];
-        comparisonGrid.innerHTML = ''; // Clear previous results
+    function generateComparison(jobTitle, experience, companySize) {
+        const comparisonGrid = document.getElementById('comparison-grid');
+        const countries = ['usa', 'canada', 'uk', 'germany', 'morocco', 'singapore'];
+        
+        comparisonGrid.innerHTML = ''; // Clear previous cards
 
-        comparisonCountries.forEach(country => {
-            const salary = calculateSalary(job, country, experience, companySize);
-            const currencyInfo = COUNTRY_CURRENCY_INFO[country];
-            const formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency', currency: currencyInfo.code, minimumFractionDigits: 0, notation: 'compact'
-            });
-
+        countries.forEach(country => {
+            const salary = calculateSalary(jobTitle, experience, companySize, country);
             const card = document.createElement('div');
             card.className = 'comparison-card';
             card.innerHTML = `
-                <h4><i class="fas fa-flag"></i> ${country.toUpperCase()}</h4>
-                <div class="salary">${formatter.format(salary)}</div>
-                <small>${currencyInfo.code}</small>
+                <h4>${country.toUpperCase()}</h4>
+                <div style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">
+                    ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(salary)}
+                </div>
+                <small>Annual Salary (USD)</small>
             `;
             comparisonGrid.appendChild(card);
         });
     }
 
-    function getMarketInsight(job, country, experience) {
-        const insights = [
-            `Roles for a ${job.replace(/-/g, ' ')} in ${country.toUpperCase()} are in high demand.`,
-            `With ${experience} years of experience, you're competing at a strong ${experience < 5 ? 'mid-level' : 'senior'} tier.`,
-            'Tech salaries in this region have seen steady growth over the past year.',
-            `Companies of this size often offer competitive benefits alongside salary.`
-        ];
-        return insights[Math.floor(Math.random() * insights.length)];
-    }
-
-    // Initial calculation on page load with default values
-    calculateAndDisplay();
+    // Run the simulation with default values on page load
+    runSimulation();
 });
