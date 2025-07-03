@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Salary Simulator - Engineer & Tech Jobs</title>
+    <meta name="description" content="Simulate and compare salaries for engineers and tech professionals across different countries and seniority levels">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .simulator-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .results-panel {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #0077b5;
+            box-shadow: 0 0 0 3px rgba(0, 119, 181, 0.1);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .salary-result {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .salary-amount {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .salary-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .detail-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #0077b5;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .comparison-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .comparison-card {
+            background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .ads-space {
+            background: rgba(255,255,255,0.1);
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .salary-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .trend-chart {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .experience-slider {
+            margin: 20px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #0077b5;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-calculator"></i> Global Salary Simulator</h1>
+            <p>Compare salaries for engineers and tech professionals worldwide</p>
+        </div>
+
+        <!-- Ad Space -->
+        <div class="ads-space">
+            <div>
+                <i class="fas fa-ad" style="font-size: 2em; margin-bottom: 10px;"></i>
+                <p>Google AdSense - Header Ad (728x90)</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulator-panel">
+                <h2><i class="fas fa-sliders-h"></i> Salary Calculator</h2>
+                
+                <div class="form-group">
+                    <label for="job-title">Job Title</label>
+                    <select id="job-title">
+                        <option value="">Select Job Title</option>
+                        <option value="software-engineer">Software Engineer</option>
+                        <option value="senior-software-engineer">Senior Software Engineer</option>
+                        <option value="lead-engineer">Lead Engineer</option>
+                        <option value="engineering-manager">Engineering Manager</option>
+                        <option value="data-scientist">Data Scientist</option>
+                        <option value="senior-data-scientist">Senior Data Scientist</option>
+                        <option value="data-analyst">Data Analyst</option>
+                        <option value="devops-engineer">DevOps Engineer</option>
+                        <option value="cloud-engineer">Cloud Engineer</option>
+                        <option value="security-engineer">Security Engineer</option>
+                        <option value="frontend-developer">Frontend Developer</option>
+                        <option value="backend-developer">Backend Developer</option>
+                        <option value="fullstack-developer">Full Stack Developer</option>
+                        <option value="mobile-developer">Mobile Developer</option>
+                        <option value="ios-developer">iOS Developer</option>
+                        <option value="android-developer">Android Developer</option>
+                        <option value="qa-engineer">QA Engineer</option>
+                        <option value="test-automation-engineer">Test Automation Engineer</option>
+                        <option value="product-manager">Product Manager</option>
+                        <option value="senior-product-manager">Senior Product Manager</option>
+                        <option value="ui-ux-designer">UI/UX Designer</option>
+                        <option value="product-designer">Product Designer</option>
+                        <option value="scrum-master">Scrum Master</option>
+                        <option value="business-analyst">Business Analyst</option>
+                        <option value="system-administrator">System Administrator</option>
+                        <option value="database-administrator">Database Administrator</option>
+                        <option value="network-engineer">Network Engineer</option>
+                        <option value="cybersecurity-analyst">Cybersecurity Analyst</option>
+                        <option value="solutions-architect">Solutions Architect</option>
+                        <option value="technical-lead">Technical Lead</option>
+                        <option value="cto">Chief Technology Officer</option>
+                        <option value="machine-learning-engineer">Machine Learning Engineer</option>
+                        <option value="ai-researcher">AI Researcher</option>
+                        <option value="blockchain-developer">Blockchain Developer</option>
+                        <option value="game-developer">Game Developer</option>
+                        <option value="embedded-systems-engineer">Embedded Systems Engineer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country">
+                        <option value="">Select Country</option>
+                        <option value="usa">United States</option>
+                        <option value="canada">Canada</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="germany">Germany</option>
+                        <option value="france">France</option>
+                        <option value="netherlands">Netherlands</option>
+                        <option value="sweden">Sweden</option>
+                        <option value="morocco">Morocco</option>
+                        <option value="india">India</option>
+                        <option value="china">China</option>
+                        <option value="japan">Japan</option>
+                        <option value="singapore">Singapore</option>
+                        <option value="australia">Australia</option>
+                        <option value="brazil">Brazil</option>
+                        <option value="mexico">Mexico</option>
+                        <option value="south-africa">South Africa</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Years of Experience: <span id="exp-value">3</span></label>
+                    <input type="range" id="experience" class="slider" min="0" max="20" value="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="company-size">Company Size</label>
+                    <select id="company-size">
+                        <option value="">Select Company Size</option>
+                        <option value="startup">Startup (1-50 employees)</option>
+                        <option value="small">Small (51-200 employees)</option>
+                        <option value="medium">Medium (201-1000 employees)</option>
+                        <option value="large">Large (1001-5000 employees)</option>
+                        <option value="enterprise">Enterprise (5000+ employees)</option>
+                    </select>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateSalary()">
+                    <i class="fas fa-chart-line"></i> Calculate Salary
+                </button>
+            </div>
+
+            <div class="results-panel">
+                <h2><i class="fas fa-money-bill-wave"></i> Salary Results</h2>
+                
+                <div id="salary-display" class="salary-result" style="display: none;">
+                    <div class="salary-amount" id="salary-amount">$0</div>
+                    <div>Annual Salary (USD)</div>
+                </div>
+
+                <div class="salary-details" id="salary-details" style="display: none;">
+                    <div class="detail-card">
+                        <div class="detail-value" id="monthly-salary">$0</div>
+                        <div class="detail-label">Monthly</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="weekly-salary">$0</div>
+                        <div class="detail-label">Weekly</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="daily-salary">$0</div>
+                        <div class="detail-label">Daily</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="hourly-salary">$0</div>
+                        <div class="detail-label">Hourly</div>
+                    </div>
+                </div>
+
+                <div class="trend-chart" id="trend-info" style="display: none;">
+                    <h3>Market Insights</h3>
+                    <p id="market-trend">Based on current market trends...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad Space -->
+        <div class="ads-space">
+            <div>
+                <i class="fas fa-ad" style="font-size: 2em; margin-bottom: 10px;"></i>
+                <p>Google AdSense - Content Ad (300x250)</p>
+            </div>
+        </div>
+
+        <div class="comparison-section">
+            <h2><i class="fas fa-globe"></i> Global Salary Comparison</h2>
+            <p>See how salaries compare across different countries for similar roles</p>
+            
+            <div class="comparison-grid" id="comparison-grid">
+                <!-- Comparison cards will be populated here -->
+            </div>
+        </div>
+
+        <!-- Ad Space -->
+        <div class="ads-space">
+            <div>
+                <i class="fas fa-ad" style="font-size: 2em; margin-bottom: 10px;"></i>
+                <p>Google AdSense - Footer Ad (728x90)</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 Global Salary Simulator. All rights reserved.</p>
+            <p>Salary estimates based on market research and industry data</p>
+        </div>
+    </div>
+
+    <script>
+        // Salary data structure
+        const salaryData = {
+            'software-engineer': {
+                'usa': { base: 95000, multiplier: 1.0 },
+                'canada': { base: 75000, multiplier: 0.85 },
+                'uk': { base: 65000, multiplier: 0.75 },
+                'germany': { base: 70000, multiplier: 0.8 },
+                'france': { base: 55000, multiplier: 0.7 },
+                'netherlands': { base: 72000, multiplier: 0.82 },
+                'sweden': { base: 68000, multiplier: 0.78 },
+                'morocco': { base: 15000, multiplier: 0.4 },
+                'india': { base: 18000, multiplier: 0.6 },
+                'china': { base: 25000, multiplier: 0.65 },
+                'japan': { base: 58000, multiplier: 0.72 },
+                'singapore': { base: 65000, multiplier: 0.75 },
+                'australia': { base: 78000, multiplier: 0.82 },
+                'brazil': { base: 28000, multiplier: 0.55 },
+                'mexico': { base: 32000, multiplier: 0.58 },
+                'south-africa': { base: 24000, multiplier: 0.5 }
+            },
+            'senior-software-engineer': {
+                'usa': { base: 140000, multiplier: 1.0 },
+                'canada': { base: 115000, multiplier: 0.85 },
+                'uk': { base: 95000, multiplier: 0.75 },
+                'germany': { base: 105000, multiplier: 0.8 },
+                'france': { base: 85000, multiplier: 0.7 },
+                'netherlands': { base: 110000, multiplier: 0.82 },
+                'sweden': { base: 102000, multiplier: 0.78 },
+                'morocco': { base: 28000, multiplier: 0.4 },
+                'india': { base: 35000, multiplier: 0.6 },
+                'china': { base: 45000, multiplier: 0.65 },
+                'japan': { base: 88000, multiplier: 0.72 },
+                'singapore': { base: 98000, multiplier: 0.75 },
+                'australia': { base: 118000, multiplier: 0.82 },
+                'brazil': { base: 48000, multiplier: 0.55 },
+                'mexico': { base: 52000, multiplier: 0.58 },
+                'south-africa': { base: 38000, multiplier: 0.5 }
+            },
+            'data-scientist': {
+                'usa': { base: 110000, multiplier: 1.0 },
+                'canada': { base: 88000, multiplier: 0.85 },
+                'uk': { base: 78000, multiplier: 0.75 },
+                'germany': { base: 85000, multiplier: 0.8 },
+                'france': { base: 68000, multiplier: 0.7 },
+                'netherlands': { base: 82000, multiplier: 0.82 },
+                'sweden': { base: 79000, multiplier: 0.78 },
+                'morocco': { base: 18000, multiplier: 0.4 },
+                'india': { base: 22000, multiplier: 0.6 },
+                'china': { base: 32000, multiplier: 0.65 },
+                'japan': { base: 72000, multiplier: 0.72 },
+                'singapore': { base: 78000, multiplier: 0.75 },
+                'australia': { base: 92000, multiplier: 0.82 },
+                'brazil': { base: 38000, multiplier: 0.55 },
+                'mexico': { base: 42000, multiplier: 0.58 },
+                'south-africa': { base: 32000, multiplier: 0.5 }
+            },
+            'product-manager': {
+                'usa': { base: 120000, multiplier: 1.0 },
+                'canada': { base: 95000, multiplier: 0.85 },
+                'uk': { base: 85000, multiplier: 0.75 },
+                'germany': { base: 90000, multiplier: 0.8 },
+                'france': { base: 75000, multiplier: 0.7 },
+                'netherlands': { base: 88000, multiplier: 0.82 },
+                'sweden': { base: 85000, multiplier: 0.78 },
+                'morocco': { base: 20000, multiplier: 0.4 },
+                'india': { base: 25000, multiplier: 0.6 },
+                'china': { base: 35000, multiplier: 0.65 },
+                'japan': { base: 78000, multiplier: 0.72 },
+                'singapore': { base: 85000, multiplier: 0.75 },
+                'australia': { base: 98000, multiplier: 0.82 },
+                'brazil': { base: 42000, multiplier: 0.55 },
+                'mexico': { base: 45000, multiplier: 0.58 },
+                'south-africa': { base: 35000, multiplier: 0.5 }
+            },
+            'devops-engineer': {
+                'usa': { base: 105000, multiplier: 1.0 },
+                'canada': { base: 85000, multiplier: 0.85 },
+                'uk': { base: 75000, multiplier: 0.75 },
+                'germany': { base: 80000, multiplier: 0.8 },
+                'france': { base: 65000, multiplier: 0.7 },
+                'netherlands': { base: 78000, multiplier: 0.82 },
+                'sweden': { base: 75000, multiplier: 0.78 },
+                'morocco': { base: 16000, multiplier: 0.4 },
+                'india': { base: 20000, multiplier: 0.6 },
+                'china': { base: 28000, multiplier: 0.65 },
+                'japan': { base: 65000, multiplier: 0.72 },
+                'singapore': { base: 72000, multiplier: 0.75 },
+                'australia': { base: 88000, multiplier: 0.82 },
+                'brazil': { base: 35000, multiplier: 0.55 },
+                'mexico': { base: 38000, multiplier: 0.58 },
+                'south-africa': { base: 28000, multiplier: 0.5 }
+            },
+            'ui-ux-designer': {
+                'usa': { base: 85000, multiplier: 1.0 },
+                'canada': { base: 68000, multiplier: 0.85 },
+                'uk': { base: 58000, multiplier: 0.75 },
+                'germany': { base: 62000, multiplier: 0.8 },
+                'france': { base: 52000, multiplier: 0.7 },
+                'netherlands': { base: 65000, multiplier: 0.82 },
+                'sweden': { base: 62000, multiplier: 0.78 },
+                'morocco': { base: 12000, multiplier: 0.4 },
+                'india': { base: 15000, multiplier: 0.6 },
+                'china': { base: 22000, multiplier: 0.65 },
+                'japan': { base: 52000, multiplier: 0.72 },
+                'singapore': { base: 58000, multiplier: 0.75 },
+                'australia': { base: 72000, multiplier: 0.82 },
+                'brazil': { base: 25000, multiplier: 0.55 },
+                'mexico': { base: 28000, multiplier: 0.58 },
+                'south-africa': { base: 22000, multiplier: 0.5 }
+            },
+            'machine-learning-engineer': {
+                'usa': { base: 130000, multiplier: 1.0 },
+                'canada': { base: 105000, multiplier: 0.85 },
+                'uk': { base: 92000, multiplier: 0.75 },
+                'germany': { base: 98000, multiplier: 0.8 },
+                'france': { base: 82000, multiplier: 0.7 },
+                'netherlands': { base: 95000, multiplier: 0.82 },
+                'sweden': { base: 92000, multiplier: 0.78 },
+                'morocco': { base: 22000, multiplier: 0.4 },
+                'india': { base: 28000, multiplier: 0.6 },
+                'china': { base: 38000, multiplier: 0.65 },
+                'japan': { base: 85000, multiplier: 0.72 },
+                'singapore': { base: 92000, multiplier: 0.75 },
+                'australia': { base: 108000, multiplier: 0.82 },
+                'brazil': { base: 45000, multiplier: 0.55 },
+                'mexico': { base: 48000, multiplier: 0.58 },
+                'south-africa': { base: 38000, multiplier: 0.5 }
+            },
+            'cybersecurity-analyst': {
+                'usa': { base: 95000, multiplier: 1.0 },
+                'canada': { base: 78000, multiplier: 0.85 },
+                'uk': { base: 68000, multiplier: 0.75 },
+                'germany': { base: 72000, multiplier: 0.8 },
+                'france': { base: 62000, multiplier: 0.7 },
+                'netherlands': { base: 75000, multiplier: 0.82 },
+                'sweden': { base: 72000, multiplier: 0.78 },
+                'morocco': { base: 18000, multiplier: 0.4 },
+                'india': { base: 22000, multiplier: 0.6 },
+                'china': { base: 28000, multiplier: 0.65 },
+                'japan': { base: 65000, multiplier: 0.72 },
+                'singapore': { base: 72000, multiplier: 0.75 },
+                'australia': { base: 82000, multiplier: 0.82 },
+                'brazil': { base: 35000, multiplier: 0.55 },
+                'mexico': { base: 38000, multiplier: 0.58 },
+                'south-africa': { base: 28000, multiplier: 0.5 }
+            }
+        };
+
+        // Company size multipliers
+        const companySizeMultipliers = {
+            'startup': 0.85,
+            'small': 0.92,
+            'medium': 1.0,
+            'large': 1.15,
+            'enterprise': 1.25
+        };
+
+        // Update experience value display
+        document.getElementById('experience').addEventListener('input', function(e) {
+            document.getElementById('exp-value').textContent = e.target.value;
+        });
+
+        function calculateSalary() {
+            const jobTitle = document.getElementById('job-title').value;
+            const country = document.getElementById('country').value;
+            const experience = parseInt(document.getElementById('experience').value);
+            const companySize = document.getElementById('company-size').value;
+
+            if (!jobTitle || !country || !companySize) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Get base salary data
+            const jobData = salaryData[jobTitle] || salaryData['software-engineer'];
+            const countryData = jobData[country] || jobData['usa'];
+            
+            // Calculate salary
+            let annualSalary = countryData.base;
+            
+            // Apply experience multiplier
+            const experienceMultiplier = 1 + (experience * 0.08);
+            annualSalary *= experienceMultiplier;
+            
+            // Apply company size multiplier
+            const sizeMultiplier = companySizeMultipliers[companySize] || 1.0;
+            annualSalary *= sizeMultiplier;
+            
+            // Apply country cost of living adjustment
+            annualSalary *= countryData.multiplier;
+            
+            // Round to nearest thousand
+            annualSalary = Math.round(annualSalary / 1000) * 1000;
+
+            // Display results
+            displayResults(annualSalary, jobTitle, country, experience);
+            generateComparison(jobTitle, experience, companySize);
+        }
+
+        function displayResults(annualSalary, jobTitle, country, experience) {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0
+            });
+
+            document.getElementById('salary-amount').textContent = formatter.format(annualSalary);
+            document.getElementById('monthly-salary').textContent = formatter.format(annualSalary / 12);
+            document.getElementById('weekly-salary').textContent = formatter.format(annualSalary / 52);
+            document.getElementById('daily-salary').textContent = formatter.format(annualSalary / 260);
+            document.getElementById('hourly-salary').textContent = formatter.format(annualSalary / 2080);
+
+            document.getElementById('salary-display').style.display = 'block';
+            document.getElementById('salary-details').style.display = 'grid';
+            document.getElementById('trend-info').style.display = 'block';
+
+            // Generate market insight
+            const insights = [
+                `${jobTitle.replace('-', ' ').toUpperCase()} roles in ${country.toUpperCase()} are currently in high demand.`,
+                `With ${experience} years of experience, you're in the ${experience < 3 ? 'entry' : experience < 7 ? 'mid' : 'senior'} level range.`,
+                `This salary estimate is based on current market trends and industry standards.`,
+                `Consider additional benefits like stock options, health insurance, and retirement plans.`
+            ];
+
+            document.getElementById('market-trend').textContent = insights[Math.floor(Math.random() * insights.length)];
+        }
+
+        function generateComparison(jobTitle, experience, companySize) {
+            const comparisonGrid = document.getElementById('comparison-grid');
+            const countries = ['usa', 'canada', 'uk', 'germany', 'morocco', 'singapore'];
+            
+            comparisonGrid.innerHTML = '';
+
+            countries.forEach(country => {
+                const jobData = salaryData[jobTitle] || salaryData['software-engineer'];
+                const countryData = jobData[country] || jobData['usa'];
+                
+                let salary = countryData.base;
+                salary *= (1 + (experience * 0.08));
+                salary *= (companySizeMultipliers[companySize] || 1.0);
+                salary *= countryData.multiplier;
+                salary = Math.round(salary / 1000) * 1000;
+
+                const card = document.createElement('div');
+                card.className = 'comparison-card';
+                card.innerHTML = `
+                    <h4>${country.toUpperCase()}</h4>
+                    <div style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">
+                        ${new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 0
+                        }).format(salary)}
+                    </div>
+                    <small>Annual Salary</small>
+                `;
+                comparisonGrid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
