@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const experienceSlider = document.getElementById('experience');
     const expValueSpan = document.getElementById('exp-value');
     const resultsContainer = document.getElementById('results-container');
+    const comparisonGrid = document.getElementById('comparison-grid');
     
     // --- DATA ---
     const salaryData = {
@@ -116,7 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
         comparisonGrid.innerHTML = ''; // Clear previous cards
 
         countries.forEach(country => {
-            const salary = calculateSalary(jobTitle, experience, companySize, country);
+            // THE FIX IS HERE! The parameters are now in the correct order.
+            const salary = calculateSalary(jobTitle, country, experience, companySize);
             const card = document.createElement('div');
             card.className = 'comparison-card';
             card.innerHTML = `
