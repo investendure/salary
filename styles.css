@@ -1,0 +1,186 @@
+/* --- Global Variables for Easy Theming --- */
+:root {
+    --primary-color: #0056b3;
+    --primary-light: #e9f5ff;
+    --success-color: #28a745;
+    --success-hover: #218838;
+    --background-color: #f4f7f6;
+    --text-color: #333;
+    --light-text-color: #555;
+    --white-color: #ffffff;
+    --border-color: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --border-radius: 8px;
+}
+
+/* --- General Body & Typography --- */
+body {
+    font-family: var(--font-main);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    color: var(--white-color);
+    text-align: center;
+    padding: 2.5rem 1rem;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.8rem;
+    font-weight: 700;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+main {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+/* --- Main Application Layout --- */
+.app-container {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-areas:
+        "form image"
+        "results image";
+    gap: 2rem;
+    background-color: var(--white-color);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+.calculator-section { grid-area: form; }
+.results-section { grid-area: results; }
+.image-section { grid-area: image; }
+
+h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Form Elements --- */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--light-text-color);
+}
+
+input[type="number"], select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+button#calculate-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: var(--success-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button#calculate-btn:hover {
+    background-color: var(--success-hover);
+}
+
+/* --- Results & Image Section --- */
+.results-section {
+    margin-top: 1rem;
+}
+
+#results-output {
+    background-color: var(--primary-light);
+    border-left: 5px solid var(--primary-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    min-height: 150px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+}
+.result-item span:first-child { color: var(--light-text-color); }
+.result-item span:last-child { font-weight: bold; color: var(--primary-color); }
+.result-item.net-pay span:last-child { font-size: 1.4rem; }
+
+.placeholder, .error {
+    color: var(--light-text-color);
+    font-style: italic;
+}
+.error { color: #d9534f; font-weight: bold; }
+
+.image-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    color: var(--light-text-color);
+    font-size: 0.9rem;
+}
+
+/* --- Responsive Design for Mobile --- */
+@media (max-width: 992px) {
+    .app-container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "form"
+            "results"
+            "image";
+    }
+    .image-section {
+        margin-top: 2rem;
+    }
+}
+@media (max-width: 768px) {
+    header h1 { font-size: 2rem; }
+    header p { font-size: 1rem; }
+    .app-container { padding: 1.5rem; }
+}
