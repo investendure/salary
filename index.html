@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Salary Simulator - Engineer & Tech Jobs</title>
-    <meta name="description" content="Simulate and compare salaries for tech professionals across different countries and seniority levels.">
+    <meta name="description" content="Simulate and compare salaries for engineers and tech professionals across different countries and seniority levels">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <!-- External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,19 +19,31 @@
 
         <main class="main-content">
             <div class="simulator-panel">
-                <h2><i class="fas fa-sliders-h"></i> Your Profile</h2>
+                <h2><i class="fas fa-sliders-h"></i> Salary Calculator</h2>
+                
+                <!-- The form now properly wraps the inputs -->
                 <form id="simulator-form">
                     <div class="form-group">
                         <label for="job-title">Job Title</label>
                         <select id="job-title" required>
                             <option value="software-engineer">Software Engineer</option>
                             <option value="senior-software-engineer">Senior Software Engineer</option>
+                            <option value="lead-engineer">Lead Engineer</option>
+                            <option value="engineering-manager">Engineering Manager</option>
                             <option value="data-scientist">Data Scientist</option>
-                            <option value="product-manager">Product Manager</option>
+                            <option value="senior-data-scientist">Senior Data Scientist</option>
+                            <option value="data-analyst">Data Analyst</option>
                             <option value="devops-engineer">DevOps Engineer</option>
+                            <option value="cloud-engineer">Cloud Engineer</option>
+                            <option value="security-engineer">Security Engineer</option>
+                            <option value="frontend-developer">Frontend Developer</option>
+                            <option value="backend-developer">Backend Developer</option>
+                            <option value="fullstack-developer">Full Stack Developer</option>
+                            <option value="mobile-developer">Mobile Developer</option>
+                            <option value="product-manager">Product Manager</option>
                             <option value="ui-ux-designer">UI/UX Designer</option>
-                            <option value="machine-learning-engineer">Machine Learning Engineer</option>
                             <option value="cybersecurity-analyst">Cybersecurity Analyst</option>
+                            <option value="machine-learning-engineer">Machine Learning Engineer</option>
                         </select>
                     </div>
 
@@ -46,58 +59,62 @@
                             <option value="sweden">Sweden</option>
                             <option value="morocco">Morocco</option>
                             <option value="india">India</option>
+                            <option value="china">China</option>
                             <option value="japan">Japan</option>
                             <option value="singapore">Singapore</option>
                             <option value="australia">Australia</option>
+                            <option value="brazil">Brazil</option>
+                            <option value="mexico">Mexico</option>
+                            <option value="south-africa">South Africa</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label for="experience">Years of Experience: <span id="exp-value">5</span></label>
-                        <input type="range" id="experience" class="slider" min="0" max="25" value="5">
+                        <label for="experience">Years of Experience: <span id="exp-value">3</span></label>
+                        <input type="range" id="experience" class="slider" min="0" max="20" value="3">
                     </div>
 
                     <div class="form-group">
                         <label for="company-size">Company Size</label>
                         <select id="company-size" required>
-                            <option value="startup">Startup (1-50)</option>
-                            <option value="small">Small (51-200)</option>
-                            <option value="medium" selected>Medium (201-1000)</option>
-                            <option value="large">Large (1001-5000)</option>
-                            <option value="enterprise">Enterprise (5000+)</option>
+                            <option value="startup">Startup (1-50 employees)</option>
+                            <option value="small">Small (51-200 employees)</option>
+                            <option value="medium" selected>Medium (201-1000 employees)</option>
+                            <option value="large">Large (1001-5000 employees)</option>
+                            <option value="enterprise">Enterprise (5000+ employees)</option>
                         </select>
                     </div>
 
                     <button type="submit" class="calculate-btn">
-                        <i class="fas fa-chart-line"></i> Simulate Salary
+                        <i class="fas fa-chart-line"></i> Calculate Salary
                     </button>
                 </form>
             </div>
 
             <div class="results-panel">
-                <h2><i class="fas fa-money-bill-wave"></i> Your Estimated Salary</h2>
-                
+                <h2><i class="fas fa-money-bill-wave"></i> Salary Results</h2>
+                <!-- Results will be dynamically inserted here -->
                 <div id="results-container">
-                    <!-- Results will be injected here by JavaScript -->
-                    <div class="placeholder">
-                        <p>Fill out your profile and click "Simulate Salary" to see your results.</p>
-                    </div>
+                     <p class="placeholder">Your results will appear here.</p>
                 </div>
             </div>
         </main>
 
         <section class="comparison-section">
-            <h2><i class="fas fa-globe"></i> Global Comparison</h2>
-            <p>See how your profile compares in other major tech hubs.</p>
+            <h2><i class="fas fa-globe"></i> Global Salary Comparison</h2>
+            <p>See how salaries compare across different countries for similar roles</p>
             <div class="comparison-grid" id="comparison-grid">
                 <!-- Comparison cards will be populated here -->
             </div>
         </section>
 
         <footer class="footer">
-            <p>© 2024 Global Salary Simulator. All data is for estimation purposes.</p>
+            <p>© 2024 Global Salary Simulator. All rights reserved.</p>
+            <p>Salary estimates based on market research and industry data.</p>
         </footer>
     </div>
+
+    <!-- External JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
